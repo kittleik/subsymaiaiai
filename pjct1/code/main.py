@@ -110,6 +110,18 @@ def on_key_press(symbol, modifiers):
         gui.obstacles = []
     elif symbol == pyglet.window.key.X:
         gui.predators = []
+    elif symbol == pyglet.window.key.D:
+        sepW += 1
+    elif symbol == pyglet.window.key.C:
+        sepW -= 1
+    elif symbol == pyglet.window.key.F:
+        alignW +=1
+    elif symbol == pyglet.window.key.V:
+        alignW -=1
+    elif symbol == pyglet.window.key.G:
+        cohW += 1
+    elif symbol == pyglet.window.key.B:
+        cohW -= 1
 
 pyglet.clock.schedule_interval(update, 1/60.0)
 
