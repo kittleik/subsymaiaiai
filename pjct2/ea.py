@@ -3,7 +3,7 @@ from random import randint
 
 class EA:
 
-    def __init__(self):
+    def __init__(self, ):
 
         genotypes = []
 
