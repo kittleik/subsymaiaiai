@@ -1,3 +1,3 @@
 from ea import EA
 
-EA()
+EA(10)
