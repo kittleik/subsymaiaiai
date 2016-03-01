@@ -1,3 +1,7 @@
 from ea import EA
 
-EA(10)
+def main():
+    EA(150,1000,900,800,500,0,2,1)
+
+if __name__ == "__main__":
+    main()

@@ -1,39 +1,50 @@
-from random import randint
-
+from population import Population
 
 class EA:
 
-    def __init__(self, bitsInGenotypes):
+    def __init__(self ,numOfGenerations, numOfChildren, numOfAdults, numOfParents, bitsInGenotypes, fitnessMethod, adultSelectionMethod, parentSelectionMethod):
 
-        self.bitsInGenotypes = bitsInGenotypes
-        genotypes = []
+        self.numOfGenerations = numOfGenerations
+        self.numOfChildren = numOfChildren
+        self.numOfAdults = numOfAdults
+        self.numOfParents = numOfParents
+        self.pop = Population(bitsInGenotypes)
+        self.adultSelectionMethod = adultSelectionMethod
+        self.parentSelectionMethod = parentSelectionMethod
 
-        for i in range(10):
-            genotypes.append(bin(randint(0,(2**bitsInGenotypes))))
+        self.pop.initializeChildPopulation(self.numOfChildren)
 
-        a = self.generatePhenotypes(genotypes)
+        self.startEvolution()
 
-        for i in a:
-            print (i)
-            print (self.fitnessTest(i))
+    def startEvolution(self):
+        for generation in range(self.numOfGenerations):
+            self.pop.developGenotypePopulation()
+            self.pop.testPopulation()
 
-    def generatePhenotypes(self, genotypes):
-        phenotypes = []
+            fitnessSum = 0
+            for c in self.pop.developedChildren:
+                fitnessSum += c.testScore
+            print(generation)
+            print(fitnessSum)
 
-        for genotype in genotypes:
-            phenotype = list(str(genotype)[2:])
+            self.adultSelection()
+            self.parentSelection()
+            self.pop.mateSelectedParents(self.numOfChildren)
 
-            for i in range(self.bitsInGenotypes-len(phenotype)):
-                phenotype.insert(0,'0')
+    def adultSelection(self):
+        if self.adultSelectionMethod == 0:
+            self.pop.fullGenerationalReplacement()
+        if self.adultSelectionMethod == 1:
+            self.pop.overProduction(self.numOfAdults)
+        if self.adultSelectionMethod == 2:
+            self.pop.generationalMixing(self.numOfAdults)
 
-            phenotypes.append((phenotype,genotype))
-
-        return phenotypes
-
-    def fitnessTest(self, genotype):
-        fitness = 0
-
-        for i in genotype[0]:
-            fitness += int(i)
-
-        return fitness
+    def parentSelection(self):
+        if self.parentSelectionMethod == 0:
+            self.pop.fitnessProportonateParentSelection(self.numOfParents)
+        if self.parentSelectionMethod == 1:
+            self.pop.sigmaScalingParentSelection(self.numOfParents)
+        if self.parentSelectionMethod == 2:
+            self.pop.tournamentParentSelection(self.numOfParents)
+        if self.parentSelectionMethod == 3:
+            self.pop.boltzmannParentSelection(self.numOfParents)
