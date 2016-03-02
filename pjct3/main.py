@@ -1,4 +1,4 @@
-import GUI from gui
+from gui import GUI
 
 if __name__ == '__main__':
-    TestApp().run()
+    GUI().run()
